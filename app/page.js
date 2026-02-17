@@ -1,28 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { useGenres } from "@/contexts/GenreContext";
 import GenreSelector from "@/components/GenreSelector";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Home() {
-  const router = useRouter();
   const { loading: authLoading } = useAuth();
-  const { hasGenres, genresLoaded } = useGenres();
 
-  useEffect(() => {
-    if (genresLoaded && hasGenres) {
-      router.push("/recommendations");
-    }
-  }, [genresLoaded, hasGenres, router]);
-
-  if (authLoading || !genresLoaded) {
-    return <LoadingSpinner />;
-  }
-
-  if (hasGenres) {
+  if (authLoading) {
     return <LoadingSpinner />;
   }
 

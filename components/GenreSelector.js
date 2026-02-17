@@ -6,11 +6,11 @@ import { fetchGenres } from "@/lib/tmdb";
 import { useGenres } from "@/contexts/GenreContext";
 import LoadingSpinner from "./LoadingSpinner";
 
-export default function GenreSelector() {
+export default function GenreSelector({ onDone }) {
   const router = useRouter();
-  const { updateGenres } = useGenres();
+  const { selectedGenres, updateGenres } = useGenres();
   const [genres, setGenres] = useState([]);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(selectedGenres);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -26,6 +26,13 @@ export default function GenreSelector() {
       });
   }, []);
 
+  // Sync if selectedGenres changes (e.g. user signs in and genres load from Firestore)
+  useEffect(() => {
+    if (selectedGenres.length > 0) {
+      setSelected(selectedGenres);
+    }
+  }, [selectedGenres]);
+
   function toggleGenre(genreId) {
     setSelected((prev) =>
       prev.includes(genreId)
@@ -36,7 +43,11 @@ export default function GenreSelector() {
 
   async function handleContinue() {
     await updateGenres(selected);
-    router.push("/recommendations");
+    if (onDone) {
+      onDone();
+    } else {
+      router.push("/recommendations");
+    }
   }
 
   if (loading) return <LoadingSpinner />;
@@ -72,13 +83,23 @@ export default function GenreSelector() {
         <p className="text-sm text-zinc-500">
           {selected.length} of 3 minimum selected
         </p>
-        <button
-          onClick={handleContinue}
-          disabled={selected.length < 3}
-          className="rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          Get Recommendations
-        </button>
+        <div className="flex gap-3">
+          {onDone && (
+            <button
+              onClick={onDone}
+              className="rounded-lg bg-zinc-800 px-6 py-3 font-semibold text-zinc-300 transition-colors hover:bg-zinc-700"
+            >
+              Cancel
+            </button>
+          )}
+          <button
+            onClick={handleContinue}
+            disabled={selected.length < 3}
+            className="rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {onDone ? "Update Genres" : "Get Recommendations"}
+          </button>
+        </div>
       </div>
     </div>
   );

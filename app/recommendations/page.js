@@ -6,6 +6,7 @@ import { useGenres } from "@/contexts/GenreContext";
 import { useReviews } from "@/contexts/ReviewsContext";
 import { discoverMovies, getMovieRecommendations } from "@/lib/tmdb";
 import MovieGrid from "@/components/MovieGrid";
+import GenreSelector from "@/components/GenreSelector";
 import RecommendationToggle from "@/components/RecommendationToggle";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
@@ -19,6 +20,7 @@ export default function RecommendationsPage() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [useReviewRecs, setUseReviewRecs] = useState(false);
+  const [editingGenres, setEditingGenres] = useState(false);
   const [error, setError] = useState("");
 
   // Redirect to home if no genres selected
@@ -113,13 +115,28 @@ export default function RecommendationsPage() {
               : "Based on your selected genres"}
           </p>
         </div>
-        {reviews.length > 0 && (
-          <RecommendationToggle
-            enabled={useReviewRecs}
-            onChange={setUseReviewRecs}
-          />
-        )}
+        <div className="flex items-center gap-4">
+          {reviews.length > 0 && (
+            <RecommendationToggle
+              enabled={useReviewRecs}
+              onChange={setUseReviewRecs}
+            />
+          )}
+          <button
+            onClick={() => setEditingGenres(!editingGenres)}
+            className="rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white"
+          >
+            {editingGenres ? "Hide Genres" : "Change Genres"}
+          </button>
+        </div>
       </div>
+
+      {editingGenres && (
+        <div className="mb-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+          <h2 className="mb-4 text-lg font-semibold text-white">Update Your Genres</h2>
+          <GenreSelector onDone={() => setEditingGenres(false)} />
+        </div>
+      )}
 
       <MovieGrid movies={movies} />
 

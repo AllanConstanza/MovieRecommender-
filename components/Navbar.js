@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useGenres } from "@/contexts/GenreContext";
 import AuthModal from "./AuthModal";
 
 const navLinks = [
-  { href: "/", label: "Home" },
   { href: "/recommendations", label: "Recommendations" },
   { href: "/watchlist", label: "Watchlist" },
   { href: "/reviews", label: "Reviews" },
@@ -15,8 +15,16 @@ const navLinks = [
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { clearGenres } = useGenres();
   const pathname = usePathname();
+  const router = useRouter();
   const [showAuth, setShowAuth] = useState(false);
+
+  async function handleSignOut() {
+    await logout();
+    clearGenres();
+    router.push("/");
+  }
 
   return (
     <>
@@ -49,7 +57,7 @@ export default function Navbar() {
                   {user.email}
                 </span>
                 <button
-                  onClick={logout}
+                  onClick={handleSignOut}
                   className="rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
                 >
                   Sign Out
