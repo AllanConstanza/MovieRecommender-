@@ -3,13 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { getPosterUrl } from "@/lib/tmdb";
+import { useAuth } from "@/contexts/AuthContext";
 import WatchlistButton from "./WatchlistButton";
 import ReviewForm from "./ReviewForm";
+import AuthGateModal from "./AuthGateModal";
 import { useReviews } from "@/contexts/ReviewsContext";
 
 export default function MovieCard({ movie }) {
+  const { user } = useAuth();
   const { submitReview, isReviewed, getReview } = useReviews();
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showAuthGate, setShowAuthGate] = useState(false);
   const posterUrl = getPosterUrl(movie.poster_path);
   const year = movie.release_date ? movie.release_date.split("-")[0] : "N/A";
   const rating = movie.vote_average ? movie.vote_average.toFixed(1) : "—";
@@ -19,6 +23,14 @@ export default function MovieCard({ movie }) {
   async function handleReviewSubmit(reviewData) {
     await submitReview(movie, reviewData);
     setShowReviewForm(false);
+  }
+
+  function handleReviewClick() {
+    if (!user) {
+      setShowAuthGate(true);
+      return;
+    }
+    setShowReviewForm(!showReviewForm);
   }
 
   return (
@@ -54,7 +66,7 @@ export default function MovieCard({ movie }) {
         <div className="mt-auto flex flex-wrap gap-2 pt-3">
           <WatchlistButton movie={movie} />
           <button
-            onClick={() => setShowReviewForm(!showReviewForm)}
+            onClick={handleReviewClick}
             className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
               reviewed
                 ? "bg-amber-600/20 text-amber-400 hover:bg-amber-600/30"
@@ -74,6 +86,11 @@ export default function MovieCard({ movie }) {
           />
         )}
       </div>
+
+      <AuthGateModal
+        isOpen={showAuthGate}
+        onClose={() => setShowAuthGate(false)}
+      />
     </div>
   );
 }

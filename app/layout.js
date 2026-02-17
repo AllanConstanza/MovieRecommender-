@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import Navbar from "@/components/Navbar";
+import AppShell from "@/components/AppShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "MovieRec — Movie Recommendations",
+  title: "The Movie Rec",
   description: "Discover movies tailored to your taste",
 };
 
@@ -25,8 +25,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Navbar />
-          <main>{children}</main>
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>
