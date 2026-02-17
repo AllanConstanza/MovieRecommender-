@@ -10,8 +10,8 @@ export default function AuthGateModal({ isOpen, onClose }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-        <div className="w-full max-w-sm rounded-2xl bg-zinc-900 p-8 text-center shadow-xl">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+        <div className="w-full max-w-sm rounded-2xl bg-zinc-900 p-6 text-center shadow-xl sm:p-8">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600/20">
             <svg
               className="h-7 w-7 text-indigo-400"

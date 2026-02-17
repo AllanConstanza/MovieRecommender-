@@ -106,16 +106,16 @@ export default function RecommendationsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-8 flex flex-col gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Recommended for You</h1>
-          <p className="mt-1 text-zinc-400">
+          <h1 className="text-2xl font-bold text-white sm:text-3xl">Recommended for You</h1>
+          <p className="mt-1 text-sm text-zinc-400 sm:text-base">
             {useReviewRecs
               ? "Based on your genres and review history"
               : "Based on your selected genres"}
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           {reviews.length > 0 && (
             <RecommendationToggle
               enabled={useReviewRecs}
@@ -132,7 +132,7 @@ export default function RecommendationsPage() {
       </div>
 
       {editingGenres && (
-        <div className="mb-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+        <div className="mb-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:p-6">
           <h2 className="mb-4 text-lg font-semibold text-white">Update Your Genres</h2>
           <GenreSelector onDone={() => setEditingGenres(false)} />
         </div>

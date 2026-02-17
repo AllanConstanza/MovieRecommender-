@@ -45,8 +45,8 @@ export default function AuthModal({ isOpen, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="w-full max-w-md rounded-2xl bg-zinc-900 p-8 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-zinc-900 p-6 shadow-xl sm:p-8">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">
             {isSignUp ? "Create Account" : "Sign In"}

@@ -79,7 +79,7 @@ export default function GenreSelector({ onDone }) {
         })}
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-zinc-500">
           {selected.length} of 3 minimum selected
         </p>
@@ -87,7 +87,7 @@ export default function GenreSelector({ onDone }) {
           {onDone && (
             <button
               onClick={onDone}
-              className="rounded-lg bg-zinc-800 px-6 py-3 font-semibold text-zinc-300 transition-colors hover:bg-zinc-700"
+              className="rounded-lg bg-zinc-800 px-6 py-3 text-sm font-semibold text-zinc-300 transition-colors hover:bg-zinc-700 sm:text-base"
             >
               Cancel
             </button>
@@ -95,7 +95,7 @@ export default function GenreSelector({ onDone }) {
           <button
             onClick={handleContinue}
             disabled={selected.length < 3}
-            className="rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex-1 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none sm:text-base"
           >
             {onDone ? "Update Genres" : "Get Recommendations"}
           </button>
